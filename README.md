@@ -17,3 +17,5 @@ MariaDB [co838]> describe subscriber;
 | latitude     | decimal(8,6) | YES  |     | NULL    |       |
 | longitude    | decimal(8,6) | YES  |     | NULL    |       |
 +--------------+--------------+------+-----+---------+-------+
+
+username@129.12.44.32
