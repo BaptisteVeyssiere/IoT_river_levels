@@ -45,7 +45,7 @@
     out.write("<input type ='number' id='subscriber_number' >");
     out.write("Enter your postcode");
     out.write("<input type ='text' id='postcode' >");
-    out.write("<button onclick='myFunction()'>Submit</button>")
+    out.write("<button onclick='myFunction()'>Submit</button>");
     out.write("<div id='status'></div>");
 
 
@@ -54,9 +54,12 @@
 <script>
 
     function myFunction() {
+
         $.ajax({
             type: "POST",
-            data: {"number" : $('#subscriber_number').val(), "lat" : lat, "lng" : lng},
+            data: {"number" : $('#subscriber_number').val(), "postcode" : $('#postcode').val()},
+
+            url: "http://129.12.44.32/rob/subscribe",
             dataType: "json",
             success: function(data, textStatus) {
                 if (data.redirect) {

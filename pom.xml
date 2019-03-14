@@ -11,7 +11,7 @@
         </activation>
         <properties>
             <tomcat-server>tomcatServer</tomcat-server>
-            <tomcat-url>http://mycode.feedthepenguin.org:8080/manager/text</tomcat-url>
+            <tomcat-url>http://129.12.44.32:8080/manager/text</tomcat-url>
         </properties>
     </profile>
 </profiles>
@@ -78,7 +78,7 @@
 <distributionManagement>
 		<repository>
 			<id>co838</id>
-			<url>http://hello.feedthepenguin.org</url>
+			<url>http://129.12.44.32</url>
 		</repository>
 		
 	</distributionManagement>
@@ -117,9 +117,9 @@
     <artifactId>tomcat7-maven-plugin</artifactId>
     <version>2.1</version>
     <configuration>
-        <url>http://localhost:8081/manager/text</url>
-        <username>arwen</username>
-        <password>#!ickle</password>
+        <url>http://129.12.44.32:8080/manager/text</url>
+        <username>rob</username>
+        <password>portishead</password>
         <path>/rob</path>
     </configuration>
 </plugin>
