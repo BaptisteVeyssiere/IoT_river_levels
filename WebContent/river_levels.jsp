@@ -122,7 +122,7 @@ if ($("#panic").prop('checked')== false){
 	polygon = "";
 }
 $.ajax({
-    type: "GET",
+    type: "POST",
     url: "#",
     data: {"station_id" : the_id, "days" : days, "polygon" : polygon},
     dataType: "json",
