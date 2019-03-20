@@ -10,7 +10,26 @@ public class DBSubscriber {
     }
 
     String number;
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
     float latitude;
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    String postcode;
 
     public float getLongitude() {
         return longitude;

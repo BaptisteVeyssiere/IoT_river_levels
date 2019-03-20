@@ -17,6 +17,11 @@
 </profiles>
 
 <dependencies>
+    <dependency>
+        <groupId>com.twilio.sdk</groupId>
+        <artifactId>twilio</artifactId>
+        <version>7.36.2</version>
+    </dependency>
 <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 <dependency>
     <groupId>mysql</groupId>
