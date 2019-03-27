@@ -1,0 +1,161 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#dashboard {
+    height: 97%;
+}
+#map {
+    width: 85%;
+    height: 100%;
+    display: inline-block;
+}
+#levels {
+    width: 15%;
+    height: 100%;
+    display: inline-block;
+    float: right;
+    background-color: #191919;
+}
+#legend {
+    height: 3%;
+    width: 100%;
+    background-color: #191919;
+    color: #dddddd;
+    font-size: 80%;
+}
+
+/* Legend */
+
+#legend ul, #legend li {
+    display: inline;
+}
+#legend span {
+    display: inline-block;
+}
+#legend li {
+    margin-right: 1%;
+}
+#level_legend span, #no_data span {
+    width: 1.5%;
+    height: 40%;
+    margin: 0 0.1%;
+}
+#level_legend span:first-of-type {
+    background-color: #FF3532;
+}
+#level_legend span:nth-of-type(2) {
+    background-color: #FF9B32;
+}
+#level_legend span:nth-of-type(3) {
+    background-color: #96FF32;
+}
+#level_legend span:nth-of-type(4) {
+    background-color: #E5FFCC;
+}
+#no_data span {
+    background-color: #3296FF;
+}
+#our_sensor span {
+    background: url("../images/marker-icon-white-grey.png") bottom no-repeat;
+    width: 1.15%;
+    height: 88%;
+    background-size: 47%;
+    vertical-align: bottom;
+}
+#other_sensor span {
+    background: url("../images/marker-icon-grey.png") bottom no-repeat;
+    width: 1.15%;
+    height: 88%;
+    background-size: 47%;
+    vertical-align: bottom;
+}
+
+/* Level panel */
+
+#selected {
+    width: 90%;
+    height: 23%;
+    padding: 10% 0 10% 10%;
+    color: #dddddd;
+}
+#selected div {
+    margin: 3% 0;
+}
+.sensor_level_indicator span {
+    width: 2%;
+    height: 20%;
+    background-color: #FF9B32;
+}
+/* Style The Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    padding: 0 10% 10% 10%;
+}
+.dropdown:after {
+    content: " ";
+    display: block;
+    border-bottom: 1px solid whitesmoke;
+    margin-top: 25%;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+#sensor_list {
+    width: 80%;
+    margin: 10% 10%;
+    overflow-y: auto;
+    height: 14%;
+
+}
+#sensor_list a {
+    background-color: #eeeeee;
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+}
+
+#sensor_list a:hover {
+    background-color: #ccc;
+}
+
+#sensor_list a.active {
+    background-color: #4CAF50;
+    color: white;
+}
