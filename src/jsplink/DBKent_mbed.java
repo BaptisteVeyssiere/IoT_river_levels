@@ -1,6 +1,6 @@
 package jsplink;
 
-public class DBStations {
+public class DBKent_mbed {
 private String station_id;
 public String getStation_id() {
 	return station_id;
@@ -20,11 +20,11 @@ public String getLongitude() {
 public void setLongitude(String longitude) {
 	this.longitude = longitude;
 }
-public int getFlood_warning() {
-	return flood_warning;
+public int getWarning() {
+	return warning;
 }
-public void setFlood_warning(int flood_warning) {
-	this.flood_warning = flood_warning;
+public void setWarning(int warning) {
+	this.warning = warning;
 }
 public String getName() {
 	return name;
@@ -32,17 +32,28 @@ public String getName() {
 public void setName(String name) {
 	this.name = name;
 }
-public String getFlood_timestamp() {
-	return flood_timestamp;
+public String getTimestamp() {
+	return timestamp;
 }
-public void setFlood_timestamp(String flood_timestamp) {
-	this.flood_timestamp = flood_timestamp;
+public void setTimestamp(String timestamp) {
+	this.timestamp = timestamp;
 }
 private String latitude;
 private String longitude;
-private int flood_warning;
+private int warning;
 private String name;
-private String flood_timestamp;
+private String timestamp;
+
+
+	public int getRiver_levels() {
+		return river_levels;
+	}
+
+	public void setRiver_levels(int river_levels) {
+		this.river_levels = river_levels;
+	}
+
+	private int river_levels;
 
 
 }

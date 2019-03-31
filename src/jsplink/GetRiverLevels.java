@@ -2,7 +2,6 @@ package jsplink;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -36,12 +35,12 @@ public List<DBLevels> getLevels(int timescale, String station_id) {
 	return db_levels;
 }
 
-public List<DBStations> getStations() {
-	List<DBStations>  stations = new ArrayList<DBStations>();
-	List<DBStations> stations_list = null;
+public List<DBKent_mbed> getStations() {
+	List<DBKent_mbed>  stations = new ArrayList<DBKent_mbed>();
+	List<DBKent_mbed> stations_list = null;
 	try {
-		 stations_list = (List<DBStations>) run.query(
-				"select * from monitoring_stations", new BeanListHandler(DBStations.class));
+		 stations_list = (List<DBKent_mbed>) run.query(
+				"select * from monitoring_stations", new BeanListHandler(DBKent_mbed.class));
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -56,11 +55,19 @@ public void panic(String station_id, Timestamp timestamp, String polygon) {
 if (polygon != null) {
         
 		try {
-			run.update("update monitoring_stations set flood_timestamp = ?, flood_polygon= ?, flood_warning = 1 where station_id = ? ",timestamp,polygon,station_id);
+			run.update("insert into flood_warnings values (?, 5, ?, NULL,1) ",timestamp,"[[1.046327,51.303922],[1.099886,51.304673],[1.104521,51.265056],[1.049932,51.264411]]");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.print(e.getMessage());
 		}
 	}
 }
+
+	public void dontpanic() {
+		try {
+			run.update("delete from flood_warnings where panic = 1");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

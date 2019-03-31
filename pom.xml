@@ -17,6 +17,14 @@
 </profiles>
 
 <dependencies>
+    <!-- https://mvnrepository.com/artifact/javax.ejb/ejb-api -->
+    <dependency>
+        <groupId>javax.ejb</groupId>
+        <artifactId>ejb-api</artifactId>
+        <version>3.0</version>
+        <scope>provided</scope>
+    </dependency>
+
     <dependency>
         <groupId>com.twilio.sdk</groupId>
         <artifactId>twilio</artifactId>
@@ -41,7 +49,14 @@
         <version>2.0</version>
         <scope>provided</scope>
     </dependency>
-<!-- https://mvnrepository.com/artifact/org.knowm.xchart/xchart -->
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20180813</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.knowm.xchart/xchart -->
 <dependency>
     <groupId>org.knowm.xchart</groupId>
     <artifactId>xchart</artifactId>

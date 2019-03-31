@@ -35,10 +35,15 @@ public class Subscribe extends HttpServlet {
 
         DataSource dataSource = CustomDataSource.getInstance();
         QueryRunner run = new QueryRunner(dataSource);
+        ResultSetHandler<DBSubscriber> subscriber_results = new BeanHandler<DBSubscriber>(DBSubscriber.class);
         ResultSetHandler<DBSubscriber> level_results = new BeanHandler<DBSubscriber>(DBSubscriber.class);
+        ResultSetHandler<DBDevices> device_results = new BeanHandler<DBDevices>(DBDevices.class);
+
 
         PrintWriter out = new PrintWriter(response.getWriter());
         String postcode = URLEncoder.encode(request.getParameter("postcode"),"UTF-8");
+         String code = request.getParameter("code");
+
         if (postcode == new String()) {
 
             response.setContentType("application/json");
@@ -103,13 +108,22 @@ public class Subscribe extends HttpServlet {
         latitude = jsonObject.getFloat("latitude");
         longitude = jsonObject.getFloat("longitude");
 
-        run.update("replace into subscriber values ( ?,  ?,?)",number,latitude,longitude);
+        run.update("replace into subscriber values ( ?, ?,?,? ,?)",number,latitude,longitude,postcode,0);
+
+        String status = "";
+        if (code != new String()) {
+            DBDevices device = run.query("select * from devices where code = ? ",device_results,code);
+            if (device != null) {
+                run.update("update subscriber set code = ? where postcode = ? ",code,postcode);
+                status += "device registered\n";
+            }
+        }
 
         response.setContentType("application/json");
         // Get the printwriter object from response to write the required json object to
         // the output stream
         JSONObject json2 = new JSONObject();
-        json2.put("form", "number updated");
+        json2.put("form", status + "number updated");
         // Assuming your json object is **jsonObject**, perform the following, it will
         // return your json object
         out.print(json2);

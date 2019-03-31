@@ -30,6 +30,7 @@
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.15" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
+          <element id="library" level="project" name="Maven: org.json:json:20180813" />
           <element id="library" level="project" name="Maven: org.knowm.xchart:xchart:3.5.4" />
           <element id="library" level="project" name="Maven: de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.13" />
           <element id="library" level="project" name="Maven: commons-dbutils:commons-dbutils:1.7" />
@@ -41,7 +42,6 @@
           <element id="library" level="project" name="Maven: org.apache.velocity:velocity:1.7" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.4" />
-          <element id="library" level="project" name="Maven: org.json:json:20180813" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -3,4 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+<servlet>
+<servlet-name>check_flooded</servlet-name>
+<servlet-class>check_flooded</servlet-class>
+<load-on-startup>1</load-on-startup>
+</servlet>
 </web-app>

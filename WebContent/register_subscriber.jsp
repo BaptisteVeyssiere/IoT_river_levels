@@ -41,11 +41,13 @@
 <body>
 <%
   out.write("Subscribe to flood alerts<br>");
-    out.write("Enter your phone number");
-    out.write("<input type ='number' id='subscriber_number' >");
-    out.write("Enter your postcode");
-    out.write("<input type ='text' id='postcode' >");
-    out.write("<button onclick='myFunction()'>Submit</button>");
+    out.write("Enter your phone number<br>");
+    out.write("<input type ='number' id='subscriber_number'><br>");
+    out.write("Enter your postcode<br>");
+    out.write("<input type ='text' id='postcode' ><br>");
+    out.write("Add mbed device code to your address.");
+    out.write("<input type ='text' id='code' ><br>");
+    out.write("<button onclick='myFunction()'>Submit</button><br>");
     out.write("<div id='status'></div>");
 
 
@@ -57,7 +59,7 @@
 
         $.ajax({
             type: "POST",
-            data: {"number" : $('#subscriber_number').val(), "postcode" : $('#postcode').val()},
+            data: {"number" : $('#subscriber_number').val(), "postcode" : $('#postcode').val(),"code" : $('#code').val()},
 
             url: "http://129.12.44.32/rob/subscribe",
             dataType: "json",

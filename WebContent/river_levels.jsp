@@ -45,11 +45,12 @@ GetRiverLevels river_levels_class = new GetRiverLevels();
 int history_size = 1;
 String base_station = "E3951";
 boolean panic = false;
-if (request.getParameter("days") != null) {
-	if (! request.getParameter("days").matches("-?\\d+(\\.\\d+)?")) {
+if (request.getParameter("days") != null && request.getParameter("polygon") == null) {
+	if (! request.getParameter("days").matches("-?\\d+(\\.\\d+)?") ) {
 		out.write("Days is not an integer");
 		return;
 	}
+
 	history_size = Integer.parseInt(request.getParameter("days"));
 }
 if (request.getParameter("station_id") != null) {
@@ -57,79 +58,78 @@ if (request.getParameter("station_id") != null) {
 	base_station = request.getParameter("station_id");
 }
 
-if (request.getParameter("polygon") != null && request.getParameter("polygon") != new String()) {
+if (request.getParameter("polygon") != null && request.getParameter("polygon").equals("panic")) {
 	String polygon = request.getParameter("polygon");
 	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	river_levels_class.panic(base_station, timestamp, polygon);
+	river_levels_class.panic(base_station, timestamp, "[[1.046327,51.303922],[1.099886,51.304673],[1.104521,51.265056],[1.049932,51.264411]]");
+	out.write("Simulating a flooded Canterbury.");
+	return;
+}else if (request.getParameter("polygon") != null && request.getParameter("polygon").equals("stand_down")) {
+	river_levels_class.dontpanic();
+	out.write("panic over");
+	return;
+}	else {
 
-}
+	DataSource dataSource = (DataSource) CustomDataSource.getInstance();
+	QueryRunner run = new QueryRunner();
+	ResultSetHandler<DBLevels> contributor_results = new BeanHandler<DBLevels>(DBLevels.class);
 
-
-
-DataSource dataSource = (DataSource) CustomDataSource.getInstance();
-QueryRunner run = new QueryRunner();
-ResultSetHandler<DBLevels> contributor_results = new BeanHandler<DBLevels>(DBLevels.class);
-
-int numCharts = 1;
+	int numCharts = 1;
 // Create Chart
-CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title("River levels").xAxisTitle("Mean").yAxisTitle("Count").build();
+	CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title("River levels").xAxisTitle("Mean").yAxisTitle("Count").build();
 
 // Customize Chart
-chart.getStyler().setLegendPosition(LegendPosition.InsideNW);
-chart.getStyler().setAvailableSpaceFill(.96);
-chart.getStyler().setLegendVisible(true);
+	chart.getStyler().setLegendPosition(LegendPosition.InsideNW);
+	chart.getStyler().setAvailableSpaceFill(.96);
+	chart.getStyler().setLegendVisible(true);
 
 
-List<DBLevels> river_levels_list = river_levels_class.getLevels(history_size,base_station);
-List<String> xAxis = new ArrayList<String>();
-List<Double> yAxis = new ArrayList<Double>();
-for (int i = 0; i < river_levels_list.size(); i ++) {
-	xAxis.add(river_levels_list.get(i).getTimestamp());
-	yAxis.add(river_levels_list.get(i).getLevel());
-}
-
-
- 
-// Series
-chart.addSeries("River levels from previous days", xAxis,yAxis);
-byte[] img = BitmapEncoder.getBitmapBytes(chart, BitmapFormat.PNG);
-
-byte[] encodeBase64 = Base64.getEncoder().encode(img);
-String encoded = new String(encodeBase64, "UTF-8");
-out.println("<img src='data:image/png;base64," + encoded + "'><br>");
-
-out.write("Days of previous data to view <input type='text' name='history_size' id='days'><br>");
-out.write("<input type=\"checkbox\" id=\"panic\" value=\"Panic\">Panic?<br>");
-out.write("Flood polygon <input type='text' id='polygon'><br>");
-		
-
-out.write("List by base station<br>");
-
-List<DBStations> stations_list = river_levels_class.getStations();
-for(int i = 0; i < stations_list.size(); i++) {
-	out.write("<button onclick=\"myFunction(this.id)\" id='" + stations_list.get(i).getStation_id() + "'>" + stations_list.get(i).getStation_id() + "</button>");
-	if (stations_list.get(i).getFlood_warning() == 1) {
-		out.write("<font color='red'>Flood warning</font><br>");
+	List<DBLevels> river_levels_list = river_levels_class.getLevels(history_size, base_station);
+	List<String> xAxis = new ArrayList<String>();
+	List<Double> yAxis = new ArrayList<Double>();
+	for (int i = 0; i < river_levels_list.size(); i++) {
+		xAxis.add(river_levels_list.get(i).getTimestamp());
+		yAxis.add(river_levels_list.get(i).getLevel());
 	}
-	
+
+
+// Series
+	chart.addSeries("River levels from previous days", xAxis, yAxis);
+	byte[] img = BitmapEncoder.getBitmapBytes(chart, BitmapFormat.PNG);
+
+	byte[] encodeBase64 = Base64.getEncoder().encode(img);
+	String encoded = new String(encodeBase64, "UTF-8");
+	out.println("<img src='data:image/png;base64," + encoded + "'><br>");
+
+	out.write("Days of previous data to view <input type='text' name='history_size' id='days'><br>");
+	out.write("<input type=\"button\" id=\"panic\" value=\"Panic\" onclick=\"myFunction('panic')\"><br>");
+	out.write("<input type=\"button\" id=\"dont_panic\" value=\"Don\'t Panic\" onclick=\"myFunction('dont_panic')\"><br>");
+
+
+	out.write("List by base station<br>");
+
+	List<DBKent_mbed> stations_list = river_levels_class.getStations();
+	for (int i = 0; i < stations_list.size(); i++) {
+		out.write("<button onclick=\"myFunction(this.id)\" id='" + stations_list.get(i).getStation_id() + "'>" + stations_list.get(i).getStation_id() + "</button>");
+		if (stations_list.get(i).getWarning() == 1) {
+			out.write("<font color='red'>Flood warning</font><br>");
+		}
+
+	}
 }
 %>
 <script>
 function myFunction(the_id) {
 var days = $("#days").val();
 var polygon = $("#polygon").val();
-if ($("#panic").prop('checked')== false){ 
+if (typeof the_id === 'undefined'){
 	polygon = "";
+} else if (the_id === "dont_panic") {
+	polygon = "stand_down";
+} else if (the_id === "panic") {
+	polygon = "panic";
 }
-$.ajax({
-    type: "POST",
-    url: "#",
-    data: {"station_id" : the_id, "days" : days, "polygon" : polygon},
-    dataType: "json",
-    success: function(data, textStatus) {
-        
-    }
-});
+	$(location).attr('href', 'http://129.12.44.32/rob/river_levels.jsp?station_id=' + the_id + "&days" + days + "&polygon=" +  polygon);
 }
 
 </script>
