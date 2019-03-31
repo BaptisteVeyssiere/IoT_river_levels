@@ -44,5 +44,25 @@ private int flood_warning;
 private String name;
 private String flood_timestamp;
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	private String type;
+
+	public String getError_type() {
+		return error_type;
+	}
+
+	public void setError_type(String error_type) {
+		this.error_type = error_type;
+	}
+
+	private String error_type;
+
 
 }

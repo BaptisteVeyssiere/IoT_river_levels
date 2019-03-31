@@ -17,6 +17,16 @@ public class DBLevels {
 	}
 	private double level;
 	private String station_id;
+
+	public int getFlood_warning() {
+		return flood_warning;
+	}
+
+	public void setFlood_warning(int flood_warning) {
+		this.flood_warning = flood_warning;
+	}
+
+	private int flood_warning;
 	public String getStation_id() {
 		return station_id;
 	}

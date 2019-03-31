@@ -3,9 +3,12 @@
 <%@ page import="org.apache.commons.dbutils.QueryRunner" %>
 <%@ page import="jsplink.DBStations" %>
 <%@ page import="org.apache.commons.dbutils.ResultSetHandler" %>
-<%@ page import="org.apache.commons.dbutils.handlers.BeanHandler" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.commons.dbutils.handlers.BeanListHandler" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="jsplink.DBLevels" %>
 
 <%
   DataSource dataSource = CustomDataSource.getInstance();
@@ -19,39 +22,24 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/dashboard.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/events.js"></script>
+  <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div id="dashboard">
   <div id="map"></div>
   <div id="levels">
-    <div id="selected" style="display: none">
-      <div class="sensor_name"><span style="font-weight: bold">Name</span> sensor</div>
-      <div class="sensor_water_level">Water level: <span style="font-weight: bold">0.75m</span></div>
-      <div class="sensor_level_indicator">Alert level: <span></span></div>
-      <div class="sensor_timestamp">At time: 12:40:00 26 Mar 2019</div>
-      <div class="sensor_source">Source: Environment Agency</div>
-    </div>
-    <div class="dropdown">
-      <button class="dropbtn">Pick a different time record</button>
-      <div class="dropdown-content">
-        <a href="#">Datetime 1</a>
-        <a href="#">Datetime 2</a>
-        <a href="#">Datetime 3</a>
-      </div>
-    </div>
+    <div id="selected"></div>
+    <div id="slider"></div>
+    <div id="date_view"></div>
     <div id="sensor_list">
       <div>
         <%
-          ResultSetHandler<List<DBStations>> resultSetHandler = new BeanListHandler<>(DBStations.class);
+          ResultSetHandler<List<DBStations>> resultSetHandler_stations = new BeanListHandler<>(DBStations.class);
           try {
-            List<DBStations> monitoring_stations = run.query("SELECT * FROM monitoring_stations", resultSetHandler);
+            List<DBStations> monitoring_stations = run.query("SELECT * FROM monitoring_stations", resultSetHandler_stations);
             for (DBStations station : monitoring_stations) {
         %>
         <a href="#"><%=station.getName()%></a>
-        <script>addMarker(<%=station.getName()%>, <%=station.getLatitude()%>, <%=station.getLongitude()%>, "own")</script>
         <%
             }
           } catch (Exception e) {
@@ -87,6 +75,10 @@
     </li>
   </ul>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXZmuEUWidttMyx2OJOtNy6Vha8WGA47o&callback=initMap" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<script src="js/events.js"></script>
+<script src="js/map.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXZmuEUWidttMyx2OJOtNy6Vha8WGA47o&callback=initMap"></script>
 </body>
 </html>

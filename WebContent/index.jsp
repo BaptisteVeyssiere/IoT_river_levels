@@ -5,6 +5,10 @@
 <%@ page import="org.apache.commons.dbutils.ResultSetHandler" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.commons.dbutils.handlers.BeanListHandler" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="jsplink.DBLevels" %>
 
 <%
   DataSource dataSource = CustomDataSource.getInstance();
@@ -18,39 +22,15 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/dashboard.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/events.js"></script>
+  <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div id="dashboard">
   <div id="map"></div>
   <div id="levels">
-    <div id="selected">
-      <%--<div class="sensor_name"><span style="font-weight: bold">Name</span> sensor</div>--%>
-      <%--<div class="sensor_water_level">Water level: <span style="font-weight: bold">0.75m</span></div>--%>
-      <%--<div class="sensor_level_indicator">Alert level: <span></span></div>--%>
-      <%--<div class="sensor_timestamp">At time: 12:40:00 26 Mar 2019</div>--%>
-      <%--<div class="sensor_source">Source: Environment Agency</div>--%>
-    </div>
-    <div class="dropdown">
-      <button class="dropbtn">Pick a different time record</button>
-      <div class="dropdown-content">
-        <%
-          ResultSetHandler<List<String>> resultSetHandler_timestamp = new BeanListHandler<>(String.class);
-          try {
-            List<String> timestamps = run.query("SELECT DISTINCT timestamp FROM levels", resultSetHandler_timestamp);
-            for (String timestamp : timestamps) {
-        %>
-        <a href="#"><%=timestamp%></a>
-        <%
-            }
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        %>
-      </div>
-    </div>
+    <div id="selected"></div>
+    <div id="slider"></div>
+    <div id="date_view"></div>
     <div id="sensor_list">
       <div>
         <%
@@ -60,7 +40,6 @@
             for (DBStations station : monitoring_stations) {
         %>
         <a href="#"><%=station.getName()%></a>
-        <script>addMarker(<%=station.getName()%>, <%=station.getLatitude()%>, <%=station.getLongitude()%>, "own")</script>
         <%
             }
           } catch (Exception e) {
@@ -96,6 +75,10 @@
     </li>
   </ul>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXZmuEUWidttMyx2OJOtNy6Vha8WGA47o&callback=initMap" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<script src="js/events.js"></script>
+<script src="js/map.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXZmuEUWidttMyx2OJOtNy6Vha8WGA47o&callback=initMap"></script>
 </body>
 </html>

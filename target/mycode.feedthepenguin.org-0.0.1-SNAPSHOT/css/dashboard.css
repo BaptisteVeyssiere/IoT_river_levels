@@ -83,64 +83,47 @@ html, body {
 #selected div {
     margin: 3% 0;
 }
+
 .sensor_level_indicator span {
-    width: 2%;
-    height: 20%;
-    background-color: #FF9B32;
-}
-/* Style The Dropdown Button */
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+    width: 11%;
+    height: 5.4%;
+    display: inline-block;
 }
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-    position: relative;
-    display: inline-block;
-    padding: 0 10% 10% 10%;
+.sensor_level_indicator span.low {
+    background-color: #E5FFCC;
 }
-.dropdown:after {
-    content: " ";
-    display: block;
-    border-bottom: 1px solid whitesmoke;
-    margin-top: 25%;
+
+.sensor_level_indicator span.medium {
+    background-color: #96FF32;
 }
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+
+.sensor_level_indicator span.high {
+    background-color: #FF9B32;
 }
-/* Links inside the dropdown */
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+
+.sensor_level_indicator span.veryhigh {
+    background-color: #FF3532;
 }
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-    display: block;
+
+.sensor_level_indicator span.nodata {
+    background-color: #3296FF;
 }
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
+
+#slider, #date_view {
+    width: 80%;
+    margin: 10%;
 }
+
+#date_view {
+    color: #dddddd;
+}
+
 #sensor_list {
     width: 80%;
     margin: 10% 10%;
     overflow-y: auto;
-    height: 14%;
+    height: 40%;
 
 }
 #sensor_list a {
