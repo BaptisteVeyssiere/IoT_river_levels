@@ -36,7 +36,7 @@ public class Flooded extends HttpServlet {
         double longitude = Double.parseDouble(request.getParameter("lng"));
 
         PrintWriter out = response.getWriter();
-        Boolean isFlooded = false;
+        boolean isFlooded = false;
 
         ResultSetHandler<List<DBFloodWarnings>> resultSetHandler_floods = new BeanListHandler<>(DBFloodWarnings.class);
         try {
@@ -52,12 +52,11 @@ public class Flooded extends HttpServlet {
                 }
                 double[] point = {json.get(0).getAsJsonArray().get(1).getAsDouble(), json.get(0).getAsJsonArray().get(0).getAsDouble()};
                 polygon.add(point);
-            }
-//            out.append(formatted_polygon.toString());
-            double[] point = {latitude, longitude};
+                double[] position = {latitude, longitude};
 
-            isFlooded = pointInPolygon(point, polygon, true);
-            out.append(isFlooded.toString());
+                isFlooded = pointInPolygon(position, polygon, true) || isFlooded;
+            }
+            out.append(Boolean.toString(isFlooded));
         } catch (Exception e) {
             e.printStackTrace();
         }
