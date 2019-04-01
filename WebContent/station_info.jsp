@@ -7,6 +7,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="jsplink.DBStations" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.TimeZone" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     DataSource dataSource = CustomDataSource.getInstance();
@@ -14,10 +16,16 @@
     String name = request.getParameter("name");
     String timestamp = request.getParameter("timestamp");
 
-    Date date = new java.util.Date(Long.parseLong(timestamp));
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    timestamp = sdf.format(date);
-    String[] warning_levels = {"low", "medium", "high", "veryhigh"};
+    Date date = new Date(Long.parseLong(timestamp));
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    sdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+    try {
+        timestamp = sdf.format(sdf.parse(sdf.format(date)));
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+String[] warning_levels = {"low", "medium", "high", "veryhigh"};
 
     ResultSetHandler<List<DBStations>> resultSetHandler_station = new BeanListHandler<>(DBStations.class);
     try {
@@ -25,7 +33,7 @@
         if (stations.size() > 0) {
             DBStations station = stations.get(0);
             ResultSetHandler<List<DBLevels>> resultSetHandler_level = new BeanListHandler<>(DBLevels.class);
-            List<DBLevels> levels = run.query("SELECT * FROM levels WHERE timestamp > TIME(DATE_SUB(\"" + timestamp + "\", INTERVAL 1 HOUR)) AND timestamp <= \"" + timestamp + "\" AND station_id LIKE \"" + station.getStation_id() + "\" ORDER BY timestamp DESC LIMIT 1", resultSetHandler_level);
+            List<DBLevels> levels = run.query("SELECT * FROM levels WHERE timestamp > DATE_SUB(\"" + timestamp + "\", INTERVAL 1 HOUR) AND timestamp <= \"" + timestamp + "\" AND station_id LIKE \"" + station.getStation_id() + "\" ORDER BY timestamp DESC LIMIT 1", resultSetHandler_level);
             if (levels.size() > 0) {
                 DBLevels level = levels.get(0);
 

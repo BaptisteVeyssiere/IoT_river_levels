@@ -9,6 +9,7 @@
 <%@ page import="com.google.gson.*" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.TimeZone" %>
 <%
     DataSource dataSource = CustomDataSource.getInstance();
     QueryRunner run = new QueryRunner(dataSource);
@@ -17,10 +18,16 @@
     Date date = new Date(Long.parseLong(timestamp));
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     timestamp = sdf.format(date);
+    sdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+    try {
+        timestamp = sdf.format(sdf.parse(sdf.format(date)));
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 
     ResultSetHandler<List<DBFloodWarnings>> resultSetHandler_floods = new BeanListHandler<>(DBFloodWarnings.class);
     try {
-        List<DBFloodWarnings> flood_warnings = run.query("SELECT * FROM flood_warnings WHERE timestamp > TIME(DATE_SUB(\"" + timestamp + "\", INTERVAL 1 HOUR)) AND timestamp <= \"" + timestamp + "\"", resultSetHandler_floods);
+        List<DBFloodWarnings> flood_warnings = run.query("SELECT * FROM flood_warnings WHERE timestamp > DATE_SUB(\"" + timestamp + "\", INTERVAL 1 HOUR) AND timestamp <= \"" + timestamp + "\"", resultSetHandler_floods);
         ListIterator<DBFloodWarnings> iterator = flood_warnings.listIterator();
         while (iterator.hasNext()){
             DBFloodWarnings warning = iterator.next();
