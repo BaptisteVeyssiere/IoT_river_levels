@@ -6,7 +6,7 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: myLatLng,
-        zoom: 10
+        zoom: 11
     });
 }
 
@@ -33,7 +33,7 @@ function addMarker(name, latitude, longitude, from) {
 
 function centerOnMarker(name) {
     marker_list.forEach(function(elem) {
-        if (elem.getTitle()) {
+        if (elem.getTitle() == name) {
             map.setCenter(elem.getPosition());
             return(true);
         }
