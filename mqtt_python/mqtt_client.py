@@ -3,6 +3,7 @@ import json
 import paho.mqtt.client as mqtt
 import time
 import mysql.connector  # Use this library https://www.w3schools.com/python/python_mysql_insert.asp
+import base64
 
 def on_connect(client, userdata, flags, rc):
     if(rc != 0):
@@ -30,8 +31,10 @@ def on_message(client, userdata, msg):
     print("message recevied " + json_string["dev_id"])
     level = json_string["payload_raw"]
     print(level)
-    levels = level.decode('base64')
-    print(levels)
+    levels = base64.b64decode(level).dec()
+    base10= int(levels, 16)
+    json_string["payload_raw"] = base10
+    print(json_string["payload_raw"])
     mydb = mysql.connector.connect(
         host ="jdbc:mysql://localhost/co838",
         user = "nathanael",
@@ -46,14 +49,18 @@ def on_message(client, userdata, msg):
           "VALUES (%s, %s, %s, %s, %s)"
     if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
         level = json_string["payload_raw"]
-        level = level.decode('base64')
         print(level)
+        levels = base64.b64decode(level).dec()
+        base10 = int(levels, 16)
+        print(base10)
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
                json_string["metadata"]["timestamp"], "mbed1")
     if(json_string["dev_id"] == "lairdc0ee400001012345"):
         level = json_string["payload_raw"]
-        level = level.decode('base64')
         print(level)
+        levels = base64.b64decode(level).dec()
+        base10 = int(levels, 16)
+        print(base10)
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
                json_string["metadata"]["timestamp"], "mbed2")
     mycursor.execute(sql, val)
