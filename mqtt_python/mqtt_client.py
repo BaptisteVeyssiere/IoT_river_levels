@@ -10,8 +10,8 @@ def on_connect(client, userdata, flags, rc):
         mydb = mysql.connector.connect(
             host ="jdbc:mysql://localhost/co838",
             user = "nathanael",
-            passwd= "portishead",
-            database= "mariaDB"
+            passwd= "portishead"
+            database= "co838"
         )
 
         mycursor = mydb.cursor()
@@ -39,7 +39,7 @@ def on_message(client, userdata, msg):
         host ="jdbc:mysql://localhost/co838",
         user = "nathanael",
         passwd= "portishead",
-        database= "mariaDB"
+        database= "co838"
     )
      # station_id, timestamp, level
 
@@ -66,7 +66,7 @@ def on_message(client, userdata, msg):
             host="jdbc:mysql://localhost/co838",
             user="nathanael",
             passwd="portishead",
-            database="mariaDB"
+            database="co838"
         )
 
         mycursor = mydb.cursor()
