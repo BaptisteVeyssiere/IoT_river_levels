@@ -43,29 +43,39 @@ def on_message(client, userdata, msg):
     )
      # station_id, timestamp, level
 
+    level = json_string["payload_raw"]
+    levels = base64.b64decode(level).dec()
+    base10 = int(levels, 16)
+
     mycursor = mydb.cursor()
 
     sql = "INSERT INTO monitoring_station  (station_id, latitude, longitude, timestamp, type) " \
           "VALUES (%s, %s, %s, %s, %s)"
     if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
-        level = json_string["payload_raw"]
-        print(level)
-        levels = base64.b64decode(level).dec()
-        base10 = int(levels, 16)
-        print(base10)
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-               json_string["metadata"]["timestamp"], "mbed1")
+               json_string["metadata"]["time"], "mbed1")
     if(json_string["dev_id"] == "lairdc0ee400001012345"):
-        level = json_string["payload_raw"]
-        print(level)
-        levels = base64.b64decode(level).dec()
-        base10 = int(levels, 16)
-        print(base10)
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-               json_string["metadata"]["timestamp"], "mbed2")
+               json_string["metadata"]["time"], "mbed2")
     mycursor.execute(sql, val)
     mydb.commit()
     mydb.close()
+
+    if(base10 > 800 and base10 < 4000):
+        mydb = mysql.connector.connect(
+            host="jdbc:mysql://localhost/co838",
+            user="nathanael",
+            passwd="portishead",
+            database="mariaDB"
+        )
+
+        mycursor = mydb.cursor()
+
+        sql = "INSERT INTO levels (station_id, timestamp, level) VALUES (%s, %s, %d)"
+        val = (json_string["dev_id"], json_string["metadata"]["time"], base10)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        mydb.close()
 
 def main():
     client = mqtt.Client(client_id="ca9119f2-b51e-40c5-8c66-f67c03ce236a",
