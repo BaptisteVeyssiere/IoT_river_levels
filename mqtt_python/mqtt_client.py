@@ -8,7 +8,7 @@ import base64
 def on_connect(client, userdata, flags, rc):
     if(rc != 0):
         mydb = mysql.connector.connect(
-            host ="jdbc:mysql://localhost/co838",
+            host ="localhost/co838",
             user = "nathanael",
             passwd= "portishead"
             database= "co838"
@@ -36,7 +36,7 @@ def on_message(client, userdata, msg):
     json_string["payload_raw"] = base10
     print(json_string["payload_raw"])
     mydb = mysql.connector.connect(
-        host ="jdbc:mysql://localhost/co838",
+        host ="localhost/co838",
         user = "nathanael",
         passwd= "portishead",
         database= "co838"
@@ -63,7 +63,7 @@ def on_message(client, userdata, msg):
 
     if(base10 > 800 and base10 < 4000):
         mydb = mysql.connector.connect(
-            host="jdbc:mysql://localhost/co838",
+            host="localhost/co838",
             user="nathanael",
             passwd="portishead",
             database="co838"
