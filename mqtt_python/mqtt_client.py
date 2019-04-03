@@ -64,7 +64,7 @@ def on_message(client, userdata, msg):
 
     print(base10)
 
-    if(base10 > 800 and base10 < 4000):
+    if(base10 > 500 and base10 < 4000):
         print(base10)
         mydb = mysql.connector.connect(
             host="localhost/co838",
