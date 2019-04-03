@@ -12,11 +12,12 @@ function initMap() {
 
 function addMarker(name, latitude, longitude, from) {
     var image;
-    if (from === "own") {
+    if (from === "ENV_API") {
         image = "images/marker-icon-white-grey.png";
     } else {
         image = "images/marker-icon-grey.png";
     }
+
     var marker = new google.maps.Marker({
         position: {lat: latitude, lng: longitude},
         map: map,

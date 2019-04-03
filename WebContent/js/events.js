@@ -65,7 +65,7 @@ $(function() {
         success: function(data) {
             var stations = JSON.parse(data);
             stations.forEach(function(station) {
-                addMarker(station.name, parseFloat(station.latitude), parseFloat(station.longitude), "own");
+                addMarker(station.name, parseFloat(station.latitude), parseFloat(station.longitude), station.type);
             });
         }
     });
