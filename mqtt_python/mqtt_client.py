@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import json
 import paho.mqtt.client as mqtt
 import time
@@ -67,14 +68,14 @@ def on_message(client, userdata, msg):
 
             mycursor = mydb.cursor()
 
-            sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, type) " \
+            sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, name, type) " \
                   "VALUES (%s, %s, %s, %s)"
             if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
                 val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-                       "MQTT_API")
+                       json_string["dev_id"], "MQTT_API")
             if(json_string["dev_id"] == "lairdc0ee400001012345"):
                 val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-                       "MQTT_API")
+                       json_string["dev_id"], "MQTT_API")
             mycursor.execute(sql, val)
             mydb.commit()
             mydb.close()
@@ -92,8 +93,8 @@ def on_message(client, userdata, msg):
 
         mycursor = mydb.cursor()
 
-        sql = "INSERT INTO levels (station_id, timestamp, level) VALUES (%s, %s, %s)"
-        val = (json_string["dev_id"], timestamp, float10)
+        sql = "INSERT INTO levels (station_id, timestamp, level, flood_warning) VALUES (%s, %s, %s, %s)"
+        val = (json_string["dev_id"], timestamp, float10, 0)
         mycursor.execute(sql, val)
         mydb.commit()
         mydb.close()
