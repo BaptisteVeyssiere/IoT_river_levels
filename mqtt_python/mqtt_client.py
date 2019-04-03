@@ -27,18 +27,15 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     time.sleep(2)
+try:
     json_string = json.loads(msg.payload.decode("utf-8"))
     print("message recevied " + json_string["payload_raw"])
 
     level = json_string["payload_raw"]
-    print(level)
     levels = base64.b64decode(level)
-    print(levels)
     base10 = int(levels.hex(), 16)
-    print(base10)
     float10 = float(base10)
     timestamp = datetime.datetime.now()
-    print(float10)
 
 
     mydb = mysql.connector.connect(
@@ -63,6 +60,8 @@ def on_message(client, userdata, msg):
     mycursor.execute(sql, val)
     mydb.commit()
     mydb.close()
+except mysql.connector.Error as err:
+    print("Something went wrong: {}".format(err))
 
     if(base10 > 500 and base10 < 4000):
         print(base10)
