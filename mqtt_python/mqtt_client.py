@@ -8,7 +8,7 @@ import datetime
 def on_connect(client, userdata, flags, rc):
     if(rc != 0):
         mydb = mysql.connector.connect(
-            host ="localhost/co838",
+            host ="localhost",
             user = "nathanael",
             passwd= "portishead",
             database= "co838",
@@ -39,7 +39,7 @@ try:
 
 
     mydb = mysql.connector.connect(
-        host ="localhost/co838",
+        host ="localhost",
         user = "nathanael",
         passwd= "portishead",
         database= "co838"
@@ -66,7 +66,7 @@ except mysql.connector.Error as err:
     if(base10 > 500 and base10 < 4000):
         print(base10)
         mydb = mysql.connector.connect(
-            host="localhost/co838",
+            host="localhost",
             user="nathanael",
             passwd="portishead",
             database="co838"
