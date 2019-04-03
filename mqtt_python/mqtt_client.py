@@ -70,11 +70,7 @@ def on_message(client, userdata, msg):
 
             sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, name, type) " \
                   "VALUES (%s, %s, %s, %s)"
-            if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
-                val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-                       json_string["dev_id"], "MQTT_API")
-            if(json_string["dev_id"] == "lairdc0ee400001012345"):
-                val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
+            val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
                        json_string["dev_id"], "MQTT_API")
             mycursor.execute(sql, val)
             mydb.commit()
