@@ -58,14 +58,14 @@ html, body {
     background-color: #3296FF;
 }
 #our_sensor span {
-    background: url("../images/marker-icon-white-grey.png") bottom no-repeat;
+    background: url("../images/marker-icon-grey.png") bottom no-repeat;
     width: 1.15%;
     height: 88%;
     background-size: 47%;
     vertical-align: bottom;
 }
 #other_sensor span {
-    background: url("../images/marker-icon-grey.png") bottom no-repeat;
+    background: url("../images/marker-icon-white-grey.png") bottom no-repeat;
     width: 1.15%;
     height: 88%;
     background-size: 47%;
