@@ -49,7 +49,7 @@
     out.write("<input type ='text' id='code' ><br>");
     out.write("<button onclick='myFunction()'>Submit</button><br>");
     out.write("<div id='status'></div>");
-
+out.write("*note using a free twillio account, sms messages will not be sent where the number has not been verified at twillio");
 
 
 %>

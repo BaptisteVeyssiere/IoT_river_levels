@@ -1,10 +1,9 @@
 <html><br>
 <head><br>
     <title><br>
-        co838 assessment3<br>
+        co838 assessment<br>
     </title><br>
 <body><br>
-<div align="center">
 Welcome to group 3's co838 assessment 3.<br>
 The code is deployed on a tomcat server using the project member's username as a path.<br>
 <br>
@@ -16,22 +15,20 @@ Rob's code is here:<br>
 Also i have written the C / C++ code for the Mbed device.  it sounds an alarm if the postcode is within the flood area.  I did attempt to view river station levels by station ID but for some reason the function call is displayed on the screen and not sent as a get request.  The mbed assigns itself an IP address using DHCP.<br>
 <br>
 Endpoints:<br>
-/subscribe subscribes the user to the subscriber database, deriving latitude and longitude using teh postcode api.<br>
+/subscribe subscribes the user to the subscriber database, deriving latitude and longitude using the postcode API.<br>
 /check_flooded sends the text message to the subscriber if they are within a flood zone.<br>
 Note: subscriber is using a twilio account and will only message registered numbers.<br>
 /MBedWarning using the mbed's network mac address this sends a code to the device allowing a user to pair the device with their subscriber information.  In cases where there is a flood the servlet returns the string "flooded" to the device, otherwise it returns the string "dry".<br>
 /PhoneWarning not used.<br>
-<A HREF="https://git.cs.kent.ac.uk/rb602/co838_assessment3/tree/rob/guide.pdf"> Rob's guide </A><br>
+<A HREF="https://git.cs.kent.ac.uk/rb602/co838_assessment3/blob/rob/rob_brew_user_guide.pdf"> Rob's guide </A><br>
 <br>
 <br>
 Baptiste's code:<br>
-<A HREF="http://129.12.44.32/http://129.12.44.32/baptiste/index.jsp"> Monitoring station map</A><br>
+<A HREF="HTTP://129.12.44.32/Baptiste/index.jsp"> Monitoring station map</A><br>
 Baptiste's user guide:<br>
-<A HREF="https://git.cs.kent.ac.uk/rb602/co838_assessment3/tree/baptiste/guide.pdf"> Baptiste's guide </A><br>
+<A HREF="HTTP://git.cs.Kent.ac.UK/rb602/co838_assessment/tree/Baptiste/guide.PDF"> Baptiste's guide </A><br>
 <br>
 Ilyas's code:<br>
-A java application run as a cron job to pull from the Environment agency into the levles and monitoring stations table.<br>
+A java application run as a cron job to pull from the Environment agency into the levels and monitoring stations table.<br>
 Nathanel's code:<br>
 A python script as an mqtt server to pull the kent Mbed data into the levels and monitoring station tables.
-
-</div>
