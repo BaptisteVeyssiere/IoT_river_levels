@@ -69,7 +69,7 @@ def on_message(client, userdata, msg):
             mycursor = mydb.cursor()
 
             sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, name, type) " \
-                  "VALUES (%s, %s, %s, %s)"
+                  "VALUES (%s, %s, %s, %s, %s)"
             val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
                        json_string["dev_id"], "MQTT_API")
             mycursor.execute(sql, val)
@@ -77,14 +77,16 @@ def on_message(client, userdata, msg):
             mydb.close()
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
-
-    if(base10 > 500 and base10 < 4000):
-        print(base10)
+    
+    print(float10)
+    if(float10 > 300 and float10 < 4000):
+        print(float10)
+        float10 = float10 / 1000
         mydb = mysql.connector.connect(
             host="localhost",
             user="nathanael",
             passwd="portishead",
-            database="co838"
+            database="co8308"
         )
 
         mycursor = mydb.cursor()
