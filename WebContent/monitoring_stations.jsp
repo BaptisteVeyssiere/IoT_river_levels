@@ -75,11 +75,11 @@ if (request.getParameter("station_id") != null) {
 	chart.getStyler().setLegendVisible(true);
 	chart.getStyler().setXAxisLabelRotation(90);
 	chart.getStyler().setYAxisMin(0.0);
-	chart.getStyler().setYAxisMax(4.0);
+	chart.getStyler().setYAxisMax(4000.0);
 
 
 	System.out.print("history size:" + history_size);
-	List<DBLevels> river_levels_list = river_levels_class.getLevels(history_size, base_station);
+	List<DBLevels> river_levels_list = river_levels_class.getMonitringStations(history_size);
 	List<String> xAxis = new ArrayList<String>();
 	List<Double> yAxis = new ArrayList<Double>();
 	for (int i = 0; i < river_levels_list.size(); i++) {
@@ -101,12 +101,9 @@ if (request.getParameter("station_id") != null) {
 
 	out.write("List by base station<br>");
 
-	List<DBKent_mbed> stations_list = river_levels_class.getStations();
+	List<DBLevels> stations_list = river_levels_class.getMonitringStations(history_size);
 	for (int i = 0; i < stations_list.size(); i++) {
 		out.write("<button onclick=\"myFunction(this.id)\" id='" + stations_list.get(i).getStation_id() + "'>" + stations_list.get(i).getStation_id() + "</button>");
-		if (stations_list.get(i).getWarning() == 1) {
-			out.write("<font color='red'>Flood warning</font><br>");
-		}
 
 
 }
@@ -115,6 +112,8 @@ if (request.getParameter("station_id") != null) {
 function myFunction(the_id) {
 var days = $("#days").val();
 var polygon = $("#polygon").val();
+if ($("#days").val() == "") alert ("Please enter a previous day to view");
+
 if (typeof the_id === 'undefined'){
 	polygon = "";
 } else if (the_id === "dont_panic") {

@@ -35,6 +35,23 @@ public class GetRiverLevels {
 	return db_levels;
 }
 
+public List<DBLevels> getMonitringStations(int timescale) {
+	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+	List<DBLevels> db_levels = null;
+	try {
+		System.out.println("Size of query:" + timescale);
+
+	db_levels = (List<DBLevels>) run.query(" SELECT `timestamp`,levels.station_id,AVG(`level`) as level from levels inner join monitoring_stations on monitoring_stations.station_id = levels.station_id    where  monitoring_stations.type = 'MQTT_API' and  ( CURDATE() - INTERVAL ? DAY ) and (CURDATE() - ? )  group by timestamp order by timestamp asc;", new BeanListHandler(DBLevels.class),timescale, timescale - 1);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
+	return db_levels;
+}
+
 public List<DBKent_mbed> getStations() {
 	List<DBKent_mbed>  stations = new ArrayList<DBKent_mbed>();
 	List<DBKent_mbed> stations_list = null;

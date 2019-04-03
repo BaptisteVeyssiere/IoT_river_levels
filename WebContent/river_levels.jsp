@@ -126,6 +126,7 @@ if (request.getParameter("polygon") != null && request.getParameter("polygon").e
 <script>
 function myFunction(the_id) {
 var days = $("#days").val();
+if ($("#days").val() == "") alert ("Please enter a previous day to view");
 var polygon = $("#polygon").val();
 if (typeof the_id === 'undefined'){
 	polygon = "";

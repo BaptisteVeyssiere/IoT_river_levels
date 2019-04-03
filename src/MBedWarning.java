@@ -3,7 +3,6 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import sun.awt.image.BadDepthException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +28,7 @@ public class MBedWarning extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String mbed_id = request.getParameter("mac");
     String read_sensor = request.getParameter("read_sensor");
+    String timestamp = request.getParameter("timestamp");
     PrintWriter out = response.getWriter();
 
         if (read_sensor != null && ! read_sensor.matches("-?\\d+") ) {
