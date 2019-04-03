@@ -44,12 +44,15 @@ function centerOnMarker(name) {
 
 function drawPolygon(severity, flood_area) {
     var colors = ['#FF3532', '#FF9B32', '#96FF32', '#E5FFCC'];
+    if (severity > 4) {
+        severity = 4;
+    }
     var polygon = new google.maps.Polygon({
         paths: flood_area,
-        strokeColor: colors[severity],
+        strokeColor: colors[severity - 1],
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: colors[severity],
+        fillColor: colors[severity - 1],
         fillOpacity: 0.35
     });
     polygon.setMap(map);
