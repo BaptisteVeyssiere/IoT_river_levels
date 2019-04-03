@@ -1,5 +1,4 @@
 import json
-
 import paho.mqtt.client as mqtt
 import time
 import mysql.connector  # Use this library https://www.w3schools.com/python/python_mysql_insert.asp
@@ -17,7 +16,7 @@ def on_connect(client, userdata, flags, rc):
 
         mycursor = mydb.cursor()
 
-        sql = "INSERT INTO monitoring_station (error_type) VALUES (%s)"
+        sql = "INSERT INTO monitoring_stations (error_type) VALUES (%s)"
         error_code = "MBED stations could not be reached. Error code " + str(rc)
         val = (error_code)
         mycursor.execute(sql, val)
@@ -40,6 +39,8 @@ def on_message(client, userdata, msg):
     float10 = float(base10)
     timestamp = datetime.datetime.now()
     print(float10)
+
+
     mydb = mysql.connector.connect(
         host ="localhost/co838",
         user = "nathanael",
@@ -48,21 +49,20 @@ def on_message(client, userdata, msg):
     )
      # station_id, timestamp, level
 
+
     mycursor = mydb.cursor()
 
-    sql = "INSERT INTO monitoring_station  (station_id, latitude, longitude, timestamp, type) " \
-          "VALUES (%s, %s, %s, %s, %s)"
+    sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, type) " \
+          "VALUES (%s, %s, %s, %s)"
     if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-               timestamp, "mbed1")
+               "MQTT_API")
     if(json_string["dev_id"] == "lairdc0ee400001012345"):
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-               timestamp, "mbed2")
+               "MQTT_API")
     mycursor.execute(sql, val)
     mydb.commit()
     mydb.close()
-
-    print(base10)
 
     if(base10 > 500 and base10 < 4000):
         print(base10)
