@@ -4,14 +4,15 @@ import paho.mqtt.client as mqtt
 import time
 import mysql.connector  # Use this library https://www.w3schools.com/python/python_mysql_insert.asp
 import base64
+import datetime
 
 def on_connect(client, userdata, flags, rc):
     if(rc != 0):
         mydb = mysql.connector.connect(
             host ="localhost/co838",
             user = "nathanael",
-            passwd= "portishead"
-            database= "co838"
+            passwd= "portishead",
+            database= "co838",
         )
 
         mycursor = mydb.cursor()
@@ -28,13 +29,17 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     time.sleep(2)
     json_string = json.loads(msg.payload.decode("utf-8"))
-    print("message recevied " + json_string["dev_id"])
+    print("message recevied " + json_string["payload_raw"])
+
     level = json_string["payload_raw"]
     print(level)
-    levels = base64.b64decode(level).dec()
-    base10= int(levels, 16)
-    json_string["payload_raw"] = base10
-    print(json_string["payload_raw"])
+    levels = base64.b64decode(level)
+    print(levels)
+    base10 = int(levels.hex(), 16)
+    print(base10)
+    float10 = float(base10)
+    timestamp = datetime.datetime.now()
+    print(float10)
     mydb = mysql.connector.connect(
         host ="localhost/co838",
         user = "nathanael",
@@ -43,25 +48,24 @@ def on_message(client, userdata, msg):
     )
      # station_id, timestamp, level
 
-    level = json_string["payload_raw"]
-    levels = base64.b64decode(level).dec()
-    base10 = int(levels, 16)
-
     mycursor = mydb.cursor()
 
     sql = "INSERT INTO monitoring_station  (station_id, latitude, longitude, timestamp, type) " \
           "VALUES (%s, %s, %s, %s, %s)"
     if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-               json_string["metadata"]["time"], "mbed1")
+               timestamp, "mbed1")
     if(json_string["dev_id"] == "lairdc0ee400001012345"):
         val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-               json_string["metadata"]["time"], "mbed2")
+               timestamp, "mbed2")
     mycursor.execute(sql, val)
     mydb.commit()
     mydb.close()
 
+    print(base10)
+
     if(base10 > 800 and base10 < 4000):
+        print(base10)
         mydb = mysql.connector.connect(
             host="localhost/co838",
             user="nathanael",
@@ -72,7 +76,7 @@ def on_message(client, userdata, msg):
         mycursor = mydb.cursor()
 
         sql = "INSERT INTO levels (station_id, timestamp, level) VALUES (%s, %s, %d)"
-        val = (json_string["dev_id"], json_string["metadata"]["time"], base10)
+        val = (json_string["dev_id"], timestamp, float10)
         mycursor.execute(sql, val)
         mydb.commit()
         mydb.close()
