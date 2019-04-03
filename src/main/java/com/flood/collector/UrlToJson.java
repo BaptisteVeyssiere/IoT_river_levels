@@ -1,9 +1,12 @@
-package com.flood.monitoring;
+package com.flood.collector;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -61,7 +64,9 @@ public class UrlToJson {
             String jsonString = getResponse(connection.getInputStream());
             connection.disconnect();
             return ((jsonString != null) ? new JSONObject(jsonString) : null);
-        } catch (IOException | JSONException ex) {
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        } catch (JSONException ex) {
             System.out.println(ex.toString());
         }
         return null;

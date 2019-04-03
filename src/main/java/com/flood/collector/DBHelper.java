@@ -1,7 +1,8 @@
-package com.flood.monitoring;
+package com.flood.collector;
 
 import java.sql.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DBHelper {
 
@@ -28,7 +29,7 @@ public class DBHelper {
 
     public List<String> getStationList() {
         String query = "SELECT station_id from monitoring_stations";
-        List<String> stationList = new LinkedList<>();
+        List<String> stationList = new LinkedList<String>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

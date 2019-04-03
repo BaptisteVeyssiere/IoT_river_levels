@@ -1,4 +1,4 @@
-package com.flood.monitoring;
+package com.flood.collector;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -106,7 +106,7 @@ public class FloodDataCollector {
         if (!floodItems.isEmpty()) {
             JSONObject areaData = urlToJson.getJson(FLOOD_AREA_URL);
             JSONArray areaItems = areaData.getJSONArray("items");
-            List<String> areaIdList = new LinkedList<>();
+            List<String> areaIdList = new LinkedList<String>();
             for (int i = 0; i < areaItems.length(); i++) {
                 JSONObject areaItem = areaItems.getJSONObject(i);
                 areaIdList.add((areaItem.getString("notation")));
