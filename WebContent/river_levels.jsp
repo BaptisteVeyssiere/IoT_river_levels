@@ -46,11 +46,8 @@ int history_size = 1;
 String base_station = "E3951";
 boolean panic = false;
 if (request.getParameter("days") != null) {
-	if (!request.getParameter("days").matches("-?\\d+(\\.\\d+)?")) {
-		out.write("Days is not an integer");
-		return;
-	}
-	history_size = Integer.parseInt(request.getParameter("days"));
+
+		history_size = Integer.parseInt(request.getParameter("days"));
 
 }
 
@@ -126,7 +123,6 @@ if (request.getParameter("polygon") != null && request.getParameter("polygon").e
 <script>
 function myFunction(the_id) {
 var days = $("#days").val();
-if ($("#days").val() == "") alert ("Please enter a previous day to view");
 var polygon = $("#polygon").val();
 if (typeof the_id === 'undefined'){
 	polygon = "";
