@@ -27,41 +27,59 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     time.sleep(2)
-    try:
-        json_string = json.loads(msg.payload.decode("utf-8"))
-        print("message received " + json_string["payload_raw"])
 
-        level = json_string["payload_raw"]
-        levels = base64.b64decode(level)
-        base10 = int(levels.hex(), 16)
-        float10 = float(base10)
-        timestamp = datetime.datetime.now()
+    json_string = json.loads(msg.payload.decode("utf-8"))
+    print("message received " + json_string["payload_raw"])
 
+    level = json_string["payload_raw"]
+    levels = base64.b64decode(level)
+    base10 = int(levels.hex(), 16)
+    float10 = float(base10)
+    timestamp = datetime.datetime.now()
 
-        mydb = mysql.connector.connect(
-            host ="localhost",
-            user = "nathanael",
-            passwd= "portishead",
-            database= "co838"
+    mydb = mysql.connector.connect(
+            host="localhost",
+            user="nathanael",
+            passwd="portishead",
+            database="co838"
         )
-         # station_id, timestamp, level
+
+    mycursor = mydb.cursor()
+
+    sql = "SELECT station_id FROM monitoring_stations WHERE station_id = %s"
+    val = (json_string["dev_id"], )
+    mycursor.execute(sql, val)
+    myresult = mycursor.fetchall()
+    mydb.close()
 
 
-        mycursor = mydb.cursor()
 
-        sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, type) " \
-              "VALUES (%s, %s, %s, %s)"
-        if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
-            val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-                   "MQTT_API")
-        if(json_string["dev_id"] == "lairdc0ee400001012345"):
-            val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
-                   "MQTT_API")
-        mycursor.execute(sql, val)
-        mydb.commit()
-        mydb.close()
-    except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
+    if not myresult:
+        try:
+            mydb = mysql.connector.connect(
+                host ="localhost",
+                user = "nathanael",
+                passwd= "portishead",
+                database= "co838"
+            )
+             # station_id, timestamp, level
+
+
+            mycursor = mydb.cursor()
+
+            sql = "INSERT INTO monitoring_stations  (station_id, latitude, longitude, type) " \
+                  "VALUES (%s, %s, %s, %s)"
+            if(json_string["dev_id"] == "lairdc0ee4000010109f3"):
+                val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
+                       "MQTT_API")
+            if(json_string["dev_id"] == "lairdc0ee400001012345"):
+                val = (json_string["dev_id"], json_string["metadata"]["latitude"], json_string["metadata"]["longitude"],
+                       "MQTT_API")
+            mycursor.execute(sql, val)
+            mydb.commit()
+            mydb.close()
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
 
     if(base10 > 500 and base10 < 4000):
         print(base10)
@@ -74,7 +92,7 @@ def on_message(client, userdata, msg):
 
         mycursor = mydb.cursor()
 
-        sql = "INSERT INTO levels (station_id, timestamp, level) VALUES (%s, %s, %d)"
+        sql = "INSERT INTO levels (station_id, timestamp, level) VALUES (%s, %s, %s)"
         val = (json_string["dev_id"], timestamp, float10)
         mycursor.execute(sql, val)
         mydb.commit()
