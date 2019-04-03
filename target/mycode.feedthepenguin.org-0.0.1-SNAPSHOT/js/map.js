@@ -42,7 +42,7 @@ function centerOnMarker(name) {
 }
 
 function drawPolygon(severity, flood_area) {
-    var colors = ['#E5FFCC', '#96FF32', '#FF9B32', '#FF3532'];
+    var colors = ['#FF3532', '#FF9B32', '#96FF32', '#E5FFCC'];
     var polygon = new google.maps.Polygon({
         paths: flood_area,
         strokeColor: colors[severity],
