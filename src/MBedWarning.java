@@ -1,7 +1,4 @@
-import jsplink.CustomDataSource;
-import jsplink.DBDevices;
-import jsplink.DBKent_mbed;
-import jsplink.DBSubscriber;
+import jsplink.*;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -34,6 +31,10 @@ public class MBedWarning extends HttpServlet {
     String read_sensor = request.getParameter("read_sensor");
     PrintWriter out = response.getWriter();
 
+        if (read_sensor != null && ! read_sensor.matches("-?\\d+") ) {
+            out.write("Sensor is not a number");
+            return;
+        }
 
         DataSource dataSource = CustomDataSource.getInstance();
         QueryRunner run = new QueryRunner(dataSource);
@@ -69,19 +70,15 @@ public class MBedWarning extends HttpServlet {
 
                 }
             } else if (read_sensor != null) {
+                GetRiverLevels getRiverLevels = new GetRiverLevels();
+                 String result = getRiverLevels.getReadingPerStation(Integer.parseInt(read_sensor));
+                 out.println(result);
 
-                DBKent_mbed  mbed = run.query("select * from levels where id = ? order by timestamp desc limit 1", kent_mbed_results, read_sensor);
-                if (mbed == null) {
-                    out.write("No data");
-                } else {
-
-                    out.write("Sensor " + mbed_id + " Level: " + mbed.getRiver_levels());
-                }
             }
 
             
 
-         } catch (Exception ex ) { System.out.println(ex.getMessage()); }
+         } catch (Exception ex ) { ex.printStackTrace(out); }
 
     }
     public static String getHTML(String urlToRead) throws Exception {

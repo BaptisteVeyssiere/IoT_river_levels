@@ -59,17 +59,7 @@ if (request.getParameter("station_id") != null) {
 	base_station = request.getParameter("station_id");
 }
 
-if (request.getParameter("polygon") != null && request.getParameter("polygon").equals("panic")) {
-	String polygon = request.getParameter("polygon");
-	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	river_levels_class.panic(base_station, timestamp, "[[1.046327,51.303922],[1.099886,51.304673],[1.104521,51.265056],[1.049932,51.264411]]");
-	out.write("Simulating a flooded Canterbury.");
-	return;
-}else if (request.getParameter("polygon") != null && request.getParameter("polygon").equals("stand_down")) {
-	river_levels_class.dontpanic();
-	out.write("panic over");
-	return;
-}	else {
+
 
 	DataSource dataSource = (DataSource) CustomDataSource.getInstance();
 	QueryRunner run = new QueryRunner();
@@ -85,7 +75,7 @@ if (request.getParameter("polygon") != null && request.getParameter("polygon").e
 	chart.getStyler().setLegendVisible(true);
 	chart.getStyler().setXAxisLabelRotation(90);
 	chart.getStyler().setYAxisMin(0.0);
-	chart.getStyler().setYAxisMax(2.0);
+	chart.getStyler().setYAxisMax(4.0);
 
 
 	System.out.print("history size:" + history_size);
@@ -107,8 +97,6 @@ if (request.getParameter("polygon") != null && request.getParameter("polygon").e
 	out.println("<img src='data:image/png;base64," + encoded + "'><br>");
 
 	out.write("Days of previous data to view <input type='text' name='days' id='days'><br>");
-	out.write("<input type=\"button\" id=\"panic\" value=\"Panic\" onclick=\"myFunction('panic')\"><br>");
-	out.write("<input type=\"button\" id=\"dont_panic\" value=\"Don\'t Panic\" onclick=\"myFunction('dont_panic')\"><br>");
 
 
 	out.write("List by base station<br>");
@@ -120,7 +108,7 @@ if (request.getParameter("polygon") != null && request.getParameter("polygon").e
 			out.write("<font color='red'>Flood warning</font><br>");
 		}
 
-	}
+
 }
 %>
 <script>

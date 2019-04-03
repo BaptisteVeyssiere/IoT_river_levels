@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 import javax.sql.DataSource;
 
@@ -18,14 +19,13 @@ public class GetRiverLevels {
 	QueryRunner run = new QueryRunner(dataSource);
 	ResultSetHandler<DBLevels> level_results = new BeanHandler<DBLevels>(DBLevels.class);
 
-public List<DBLevels> getLevels(int timescale, String station_id) {
+	public List<DBLevels> getLevels(int timescale, String station_id) {
 	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	
 	List<DBLevels> db_levels = null;
 	try {
-		db_levels = (List<DBLevels>) run.query(
-				"select * from levels where station_id = ? and timestamp >= DATE_SUB(NOW(),interval ? day) order by timestamp asc", new BeanListHandler(DBLevels.class),
-				station_id, timescale);
+		System.out.println("Size of query:" + timescale);
+		db_levels = (List<DBLevels>) run.query("SELECT `timestamp`,station_id,AVG(`level`) as level from levels  where station_id = ? and timestamp between ( CURDATE() - INTERVAL ? DAY ) and (CURDATE() - ? ) group by timestamp order by timestamp asc;", new BeanListHandler(DBLevels.class),station_id, timescale, timescale - 1);
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -40,7 +40,7 @@ public List<DBKent_mbed> getStations() {
 	List<DBKent_mbed> stations_list = null;
 	try {
 		 stations_list = (List<DBKent_mbed>) run.query(
-				"select * from monitoring_stations", new BeanListHandler(DBKent_mbed.class));
+				"select * from monitoring_stations group by station_id", new BeanListHandler(DBKent_mbed.class));
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -51,6 +51,22 @@ public List<DBKent_mbed> getStations() {
 	}
 	return stations;
 }
+
+public String getReadingPerStation(int station_id) {
+		try {
+
+			List<DBLevels> levels =(List<DBLevels>) run.query("select * from levels group by station_id ", new BeanListHandler(DBLevels.class));
+			if ( station_id > levels.size()) {
+				return "eof";
+
+			} else {
+				return(levels.get(station_id-1).getStation_id() + " " +    Double.toString(levels.get(station_id -1).getLevel()));
+			}
+
+		} catch (Exception ex) { ex.printStackTrace(); 	return ex.getMessage();
+  		}
+}
+
 public void panic(String station_id, Timestamp timestamp, String polygon) {
 if (polygon != null) {
         

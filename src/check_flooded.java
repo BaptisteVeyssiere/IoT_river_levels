@@ -58,7 +58,7 @@ public class check_flooded implements ServletContextListener {
 
                                         new com.twilio.type.PhoneNumber("+44" + subscriber.getNumber()),
                                         new com.twilio.type.PhoneNumber("+441472732030"),
-                                        "Flood warning for your postcode" + subscriber.getPostcode())
+                                        "Flood warning for your postcode " + subscriber.getPostcode())
                                         .create();
                             } catch (Exception ex) { System.out.println(ex.getMessage()); }
                         }

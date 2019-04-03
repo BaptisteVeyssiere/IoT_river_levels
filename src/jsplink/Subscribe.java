@@ -42,9 +42,10 @@ public class Subscribe extends HttpServlet {
 
         PrintWriter out = new PrintWriter(response.getWriter());
         String postcode = URLEncoder.encode(request.getParameter("postcode"),"UTF-8");
+
          String code = request.getParameter("code");
 
-        if (postcode == new String()) {
+        if (postcode.equals(new String())) {
 
             response.setContentType("application/json");
             // Get the printwriter object from response to write the required json object to
@@ -56,6 +57,7 @@ public class Subscribe extends HttpServlet {
             out.print(json2);
             return;
         }
+
         Pattern pattern = Pattern.compile("\\s");
         Matcher matcher = pattern.matcher(postcode);
         boolean found = matcher.find();

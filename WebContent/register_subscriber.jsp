@@ -41,11 +41,11 @@
 <body>
 <%
   out.write("Subscribe to flood alerts<br>");
-    out.write("Enter your phone number<br>");
+    out.write("Enter your phone number (without +44) <br>");
     out.write("<input type ='number' id='subscriber_number'><br>");
     out.write("Enter your postcode<br>");
     out.write("<input type ='text' id='postcode' ><br>");
-    out.write("Add mbed device code to your address.");
+    out.write("Add mbed device code to your address.<br>");
     out.write("<input type ='text' id='code' ><br>");
     out.write("<button onclick='myFunction()'>Submit</button><br>");
     out.write("<div id='status'></div>");
