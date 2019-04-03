@@ -65,24 +65,22 @@ public class Flooded extends HttpServlet {
     private boolean pointInPolygon(double[] point, ArrayList<double[]> polygon, boolean pointOnVertex) {
         _pointOnVertex = pointOnVertex;
 
-        // Check if the point sits exactly on a vertex
         if (_pointOnVertex && pointOnVertex(point, polygon)) {
             return true;
         }
 
-        // Check if the point is inside the polygon or on the boundary
         int intersections = 0;
         int vertices_count = polygon.size();
 
         for (int i = 1; i < vertices_count; i++) {
             double[] vertex1 = polygon.get(i-1);
             double[] vertex2 = polygon.get(i);
-            if (vertex1[1] == vertex2[1] && vertex1[1] == point[1] && point[0] > min(vertex1[0], vertex2[0]) && point[0] < max(vertex1[0], vertex2[0])) { // Check if point is on an horizontal polygon boundary
+            if (vertex1[1] == vertex2[1] && vertex1[1] == point[1] && point[0] > min(vertex1[0], vertex2[0]) && point[0] < max(vertex1[0], vertex2[0])) {
                 return true;
             }
             if (point[1] > min(vertex1[1], vertex2[1]) && point[1] <= max(vertex1[1], vertex2[1]) && point[0] <= max(vertex1[0], vertex2[0]) && vertex1[1] != vertex2[1]) {
                 double xinters = (point[1] - vertex1[1]) * (vertex2[0] - vertex1[0]) / (vertex2[1] - vertex1[1]) + vertex1[0];
-                if (xinters == point[0]) { // Check if point is on the polygon boundary (other than horizontal)
+                if (xinters == point[0]) {
                     return true;
                 }
                 if (vertex1[0] == vertex2[0] || point[0] <= xinters) {
@@ -90,7 +88,6 @@ public class Flooded extends HttpServlet {
                 }
             }
         }
-        // If the number of edges we passed through is odd, then it's in the polygon.
         return (intersections % 2) != 0;
     }
 

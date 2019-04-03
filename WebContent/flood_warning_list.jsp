@@ -18,9 +18,10 @@
     Date date = new Date(Long.parseLong(timestamp));
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     timestamp = sdf.format(date);
-    sdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+//    sdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
     try {
-        timestamp = sdf.format(sdf.parse(sdf.format(date)));
+//        timestamp = sdf.format(sdf.parse(sdf.format(date)));
+        timestamp = sdf.format(date);
     } catch (Exception e) {
         e.printStackTrace();
     }

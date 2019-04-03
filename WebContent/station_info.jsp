@@ -4,11 +4,9 @@
 <%@ page import="jsplink.DBLevels" %>
 <%@ page import="org.apache.commons.dbutils.ResultSetHandler" %>
 <%@ page import="org.apache.commons.dbutils.handlers.BeanListHandler" %>
-<%@ page import="java.util.List" %>
 <%@ page import="jsplink.DBStations" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.TimeZone" %>
+<%@ page import="java.util.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     DataSource dataSource = CustomDataSource.getInstance();
@@ -18,15 +16,18 @@
 
     Date date = new Date(Long.parseLong(timestamp));
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    sdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+//    sdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
     try {
-        timestamp = sdf.format(sdf.parse(sdf.format(date)));
+//        timestamp = sdf.format(sdf.parse(sdf.format(date)));
+        timestamp = sdf.format(date);
     } catch (Exception e) {
         e.printStackTrace();
     }
 
 String[] warning_levels = {"low", "medium", "high", "veryhigh"};
-
+Map<String, String> source = new HashMap<String, String>();
+source.put("ENV_API", "Environment Agency");
+source.put("MQTT_API", "Kent University Network");
     ResultSetHandler<List<DBStations>> resultSetHandler_station = new BeanListHandler<>(DBStations.class);
     try {
         List<DBStations> stations = run.query("SELECT * FROM monitoring_stations WHERE name LIKE \"" + name + "\"", resultSetHandler_station);
@@ -42,7 +43,7 @@ String[] warning_levels = {"low", "medium", "high", "veryhigh"};
 <div class="sensor_water_level">Water level: <span style="font-weight: bold"><%=level.getLevel()%>m</span></div>
 <div class="sensor_level_indicator">Alert level: <span class="<%=warning_levels[level.getFlood_warning()]%>"></span></div>
 <div class="sensor_timestamp">At time: <%=level.getTimestamp()%></div>
-<div class="sensor_source">Source: <%=station.getType()%></div>
+<div class="sensor_source">Source: <%=source.get(station.getType())%></div>
 <%
             } else {
 %>
@@ -50,7 +51,7 @@ String[] warning_levels = {"low", "medium", "high", "veryhigh"};
 <div class="sensor_water_level">Water level: <span style="font-weight: bold">No data</span></div>
 <div class="sensor_level_indicator">Alert level: <span class="nodata"></span></div>
 <div class="sensor_timestamp">At time: -</div>
-<div class="sensor_source">Source: <%=station.getType()%></div>
+<div class="sensor_source">Source: <%=source.get(station.getType())%></div>
 <%
             }
         }
