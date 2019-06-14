@@ -10,7 +10,7 @@ public class CustomDataSource {
 
    //  Database credentials
    static final String USER = "rob";
-   static final String PASS = "portishead";
+   static final String PASS = "";
    private static DataSource datasource;
    private static final BasicDataSource basicDataSource;
 
